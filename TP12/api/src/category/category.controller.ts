@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Post, Put } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post, Put } from '@nestjs/common';
 import { CategoryService } from './category.service';
 import { CreateCategoryDto } from './dto/create-category.dto';
 import { Category } from './schemas/category.schema';
@@ -20,21 +20,19 @@ export class CategoryController {
 
     // Get by ID
     @Get('/id')
-    async getCategory(@Body('id') id: string): Promise<Category> {
+    async getCategory(@Param('id') id: string): Promise<Category> {
         return this.categoryService.findById(id);
     }
 
     // Update by ID
-    @Put('/update')
-    async updateCategpry(
-        @Body() category: UpdateCategoryDto,
-    ): Promise<Category> {
-        return this.categoryService.updateById(category);
+    @Put('/update/:id')
+    async updateCategpry(@Body() category: UpdateCategoryDto,@Param("id") categoryId:string) {
+        return this.categoryService.updateById(categoryId, category);
     }
 
     // Delete by ID
-    @Delete('/delete')
-    async deleteCategory(@Body('id') id: string): Promise<{status?: boolean; message?: string }> {
-        return this.categoryService.deleteById(id);
+    @Delete('/delete/:id')
+    async deleteCategory(@Param('id') id: string): Promise<{status?: boolean; message?: string }> {
+        return await this.categoryService.deleteById(id);
     }
 }

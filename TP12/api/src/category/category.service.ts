@@ -49,11 +49,10 @@ export class CategoryService {
             return category;
         }
         
-        async updateById(category: UpdateCategoryDto): Promise<Category> {
-            const {id, name, description } = category;
-            const updateCategory =  await this.categoryModel.findByIdAndUpdate(id, { name, description }, {
-                new: true
-            });
+        async updateById(categoryId:string ,category: UpdateCategoryDto): Promise<Category> {
+            const { name, description } = category;
+
+            const updateCategory =  await this.categoryModel.findByIdAndUpdate(categoryId, { name, description } );
             return updateCategory;
         }
         

@@ -4,21 +4,51 @@
         <h1>Admin dashboard</h1>
         <h1>លេខមួយ.com</h1>
       </div>
-      <div class="loginpage">
-        <h3>Admin</h3>
-        <form @submit.prevent="login">
+      <div class="signUpPage">
+        <h3>Sign Up</h3>
+        <p>Please fill in this form to create an account.</p>
+        <hr/>
+        <form @submit.prevent="signUp">
             <div class="txt_field">
-                <input type="text" v-model="username" required>
+                <input type="email" v-model="email" name="email" required>
+                <span></span>
+                <label>Email</label>
+            </div>
+            <div class="txt_field">
+                <input type="text" v-model="username" name="username" required>
                 <span></span>
                 <label>Username</label>
+            </div>
+            <div class="txt_field">
+                <input type="text" v-model="firstname" name="firstname" required>
+                <span></span>
+                <label>First name</label>
+            </div>
+            <div class="txt_field">
+                <input type="text" v-model="lastname" name="lastname" required>
+                <span></span>
+                <label>Last name</label>
             </div>
             <div class="txt_field">
                 <input type="password" v-model="password" required>
                 <span></span>
                 <label>Password</label>
             </div>
+            <div class="txt_field">
+                <input type="password" v-model="repeat_password" required>
+                <span></span>
+                <label>Repeat Password</label>
+            </div>
             <div class="pass">Forgot Password?</div>
-            <input type="submit" value="Login">
+            <input type="submit" value="Sign Up">
+            <div class="loginnow">
+                <span>Already have account?</span>
+                <span href="" class="pass">
+                    <router-link to="/auth/login">
+                        Login now
+                    </router-link>
+                </span>
+            </div>
         </form>
       </div>
     </div>
@@ -29,19 +59,27 @@
     export default {
         data() {
             return {
+                email: '',
                 username: '',
+                firstname: '',
+                lastname: '',
                 password: '',
+                repeat_password: '',
             };
         },
 
         methods: {
-            login() {
+            signUp() {
                 const data = {
+                    email: this.email,
                     username: this.username,
+                    firstname: this.firstname,
+                    lastname: this.lastname,
                     password: this.password,
+                    repeat_password: this.repeat_password,
                 };
 
-                fetch('http://localhost:3000/auth/login', {
+                fetch('http://localhost:3000/auth/signup', {
                     method: 'POST',
                     headers: {
                         'Accept': 'application/json',
@@ -49,18 +87,13 @@
                     },
                     body: JSON.stringify(data)
                 })
-                .then(res=> {
-                    if(res.status<200 || res.status>=300) {
-                        throw new Error('Login failed');
-                    } 
-                    return res.json();
-                })
                 .then(data => {
-                    if (data.success) {
-                        localStorage.setItem("token", data.token);
+                    console.log(data);
+                    if (data.ok) {
+                        alert("Successfully registered!!");
                         this.$router.push({ name: "dashboard" });
                     } else {
-                        throw new Error('Login failed'); 
+                        throw new Error('SignUp failed'); 
                     }
                 })
                 .catch(error => {
@@ -96,22 +129,27 @@
       height: 50px;
     }
 
-    .loginpage{
+    .signUpPage{
         position: absolute;
         top: 50%;
         left: 50%;
         transform: translate(-50%, -50%);
-        width: 300px;
+        width: 400px;
         background: white;
         border-radius: 10px;
         box-shadow: 10px 10px 15px rgba(0,0,0,0.05);
     }
 
-    .loginpage h3{
+    .signUpPage h3{
         text-align: center;
-        padding: 20px 0;
-        border-bottom: 1px solid silver;
         font-size: 23px;
+    }
+
+    .signUpPage p{
+        margin-top: 5px;
+        font-size: 14px;
+        text-align: center;
+        color:#6d6d6d;
     }
 
     form{
@@ -122,7 +160,7 @@
     form .txt_field{
         position: relative;
         border-bottom: 2px solid #adadad;
-        margin: 30px 0;
+        margin: 20px 0;
     }
 
     .txt_field input{
@@ -170,9 +208,11 @@
         margin: -5px 0 20px 5px;
         color: #a6a6a6;
         cursor: pointer;
+        font-size: 14px;
     }
     .pass:hover{
         text-decoration: underline;
+        color: #2691d9;
     }
     input[type="submit"]{
         width: 100%;
@@ -190,6 +230,20 @@
     input[type="submit"]:hover{
         background-color: #243ee7;
         transition: .5s;
+    }
+
+    .loginnow {
+        text-align: center;
+        margin-bottom: 7px;
+    }
+
+    .loginnow span{
+        color: #6d6d6d;
+        font-size: 14px;
+    }
+
+    .loginnow a {
+        color: #2691d9;
     }
   </style>
   

@@ -56,6 +56,7 @@ export class AuthService {
       if (bcrypt.compareSync(password, user.password)) {
         return {
           success: true,
+          
           user: user
         };
       }

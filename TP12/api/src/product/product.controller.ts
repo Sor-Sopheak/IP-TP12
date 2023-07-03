@@ -26,11 +26,9 @@ export class ProductController {
         return this.productService.findCategoryItems(subCategoryId);
     }
 
-    @Put('/update')
-    async updateProduct(
-        @Body() Product: UpdateProductDto
-    ) {
-        return this.productService.updateById(Product);
+    @Put('/update/:id')
+    async updateProduct(@Body() product: UpdateProductDto, @Param('id') productId:string) {
+        return this.productService.updateById(productId ,product);
     }
 
     @Get('/id')
@@ -38,8 +36,8 @@ export class ProductController {
         return this.productService.findById(id);
     }
 
-    @Delete('/delete')
-    async deleteProduct(@Body('id') id: string): Promise<{ status?: boolean; message?: string }> {
-        return this.productService.deleteById(id);
+    @Delete('/delete/:id')
+    async deleteProduct(@Param('id') id: string): Promise<{ status?: boolean; message?: string }> {
+        return await this.productService.deleteById(id);
     }
 }

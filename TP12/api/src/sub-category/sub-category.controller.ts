@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Post, Put } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post, Put } from '@nestjs/common';
 import { SubCategoryService } from './sub-category.service';
 import { SubCategory } from './schemas/sub-category.schema';
 import { CreateSubcategoryDto } from './dto/create-subCategory.dto';
@@ -23,16 +23,14 @@ export class SubCategoryController {
         return this.subCategoryService.findById(id);
     }
 
-    @Put('/update')
-    async updateSubCategory(
-        @Body() subCategory: UpdateSubcategoryDto
-    ): Promise<SubCategory> {
-        return this.subCategoryService.updateById(subCategory);
+    @Put('/update/:id')
+    async updateSubCategory(@Body() subCategory: UpdateSubcategoryDto, @Param('id') subCategoryId:string): Promise<SubCategory> {
+        return this.subCategoryService.updateById(subCategoryId ,subCategory);
     }
 
-    @Delete('/delete')
-    async deleteSubCategory(@Body('id') id: string): Promise<{ status?: boolean; message?: string }> {
-        return this.subCategoryService.deleteById(id);
+    @Delete('/delete/:id')
+    async deleteSubCategory(@Param('id') id: string): Promise<{ status?: boolean; message?: string }> {
+        return await this.subCategoryService.deleteById(id);
     }
 }
 

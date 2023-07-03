@@ -1,3 +1,6 @@
+<template>
+  <h1>Welcome to small CRUD project.</h1>
+</template>
 <!-- <script setup>
 import WelcomeItem from './WelcomeItem.vue'
 import DocumentationIcon from './icons/IconDocumentation.vue'

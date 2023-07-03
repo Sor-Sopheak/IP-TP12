@@ -46,16 +46,7 @@ export class ProductService {
 
     return this.productModel.find().exec();
   }
-
-
-  //  async findCategoryItems(subCategoryId = '') {
-  //   try{
-  //     return await this.productModel.find({subCategoryId:subCategoryId});
-
-  //   }catch(err){
-  //     return {msg:"Product not found"}
-  //   }
-  // }  
+  
   async findCategoryItems(subctgId: string) {
     try {
       const productPrices = await this.productModel.aggregate([
@@ -109,16 +100,13 @@ export class ProductService {
     return product;
   }
 
-  async updateById(
-    product: UpdateProductDto,
-  ): Promise<{ Product?: any; status?: any; message?: any }> {
-    const { id, name, description, imageUrl, categoryId, subCategoryId } =
-      product;
+  async updateById(productId:string, product: UpdateProductDto): Promise<{ Product?: any; status?: any; message?: any }> {
+    const { name, description, imageUrl, categoryId, subCategoryId } = product;
     if (subCategoryId && categoryId) {
 			const subctgIds = await this.subctgModel.find({}, '_id').exec();
 			for (const scId of subctgIds) {
 				if (scId._id.toString() === subCategoryId) {
-					const updateProduct = await this.productModel.findByIdAndUpdate(id, {name, description, imageUrl, categoryId, subCategoryId }, {new: true});
+					const updateProduct = await this.productModel.findByIdAndUpdate(productId, {name, description, imageUrl, categoryId, subCategoryId }, {new: true});
 					return {
 						status: true,
 						Product: updateProduct

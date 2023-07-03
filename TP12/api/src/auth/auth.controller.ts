@@ -37,11 +37,14 @@ export class AuthController {
   // login
   @Post('/login')
   @UsePipes(ValidationPipe)
-  async login(@Body() loginDto: LoginDto, @Req() req: Request): Promise<{ success: boolean; user: User }> {
+  async login(@Body() loginDto: LoginDto, @Req() req: Request): Promise<{ success: boolean; user: User ,token:string}> {
     const result = await this.authService.login(loginDto);
     const token = this.jwtService.sign({ user: result.user });
     req.session.jwtToken = token; 
-    return result;
+    return {
+      ...result,
+      token:token
+    };
   }
 
   //  Logout

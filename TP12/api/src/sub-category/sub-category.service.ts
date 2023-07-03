@@ -40,11 +40,9 @@ export class SubCategoryService {
         return subCategory;
     }
 
-    async updateById(subCategory: UpdateSubcategoryDto): Promise<SubCategory> {
-        const {id, name, description, categoryId } = subCategory;
-        const updateSubcategory =  await this.subCategoryModel.findByIdAndUpdate(id, { name, categoryId, description }, {
-          new: true
-        });
+    async updateById( subCategoryId:string ,subCategory: UpdateSubcategoryDto): Promise<SubCategory> {
+        const {name, description, categoryId } = subCategory;
+        const updateSubcategory =  await this.subCategoryModel.findByIdAndUpdate(subCategoryId, { name, categoryId, description });
         return updateSubcategory;
     }
 

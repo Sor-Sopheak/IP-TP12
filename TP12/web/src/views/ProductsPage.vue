@@ -66,9 +66,9 @@ export default {
             url = `http://localhost:3000/product/all/${subCategoryId}`;
         
             const response = await fetch(url);
-        const data = await response.json();
-        console.log(data);
-        this.products = data;
+            const data = await response.json();
+           
+            this.products = data;
         
       } catch (error) {
         console.error("Error fetching products:", error);
